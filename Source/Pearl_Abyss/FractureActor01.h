@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
+#include "KismetProceduralMeshLibrary.h"
 
 #include "FractureActor01.generated.h"
 
@@ -79,4 +80,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void ReplaceVertexAndTriangle(TArray<FVector> ui, TArray<int> tri);
+
+	UFUNCTION(BlueprintCallable)
+	void MakeNewMesh(TArray<FVector> ui, TArray<int> tri, FVector impactPoint);
 };

@@ -21,7 +21,7 @@ void AFractureActor01::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GenerateMesh();
+	//GenerateMesh();
 }
 
 void AFractureActor01::Tick(float DeltaTime)
@@ -168,11 +168,34 @@ void AFractureActor01::FractureActor(FVector impactPoint, int size)
 
 void AFractureActor01::ReplaceVertexAndTriangle(TArray<FVector> ui, TArray<int> tri)
 {
-	Vertices.Empty();
+	for (int i = 0; i < Vertices.Num(); ++i)
+	{
+		Vertices[i] = ui[i];
+		Triangles[i] = tri[i];
+	}
+	/*Vertices.Empty();
 	Vertices = ui;
 
 	Triangles.Empty();
-	Triangles = tri;
+	Triangles = tri;*/
 
-	FractureMesh->CreateMeshSection_LinearColor(0, Vertices, Triangles, Normals, UV0, VertexColors, Tangents, true);
+	//FractureMesh->CreateMeshSection_LinearColor(0, Vertices, Triangles, Normals, UV0, VertexColors, Tangents, true);
+	FractureMesh->UpdateMeshSection(0, Vertices, Normals, UV0, VertexColors2, Tangents);
+}
+
+void AFractureActor01::MakeNewMesh(TArray<FVector> ui, TArray<int> tri, FVector impactPoint)
+{
+	for (int i = 0; i < Vertices.Num(); ++i)
+	{
+		if (FVector(Vertices[i] - impactPoint).Size() < 800)
+		{
+			Vertices.Empty();
+			Vertices = ui;
+
+			Triangles.Empty();
+			Triangles = tri;
+
+			FractureMesh->UpdateMeshSection(0, Vertices, Normals, UV0, VertexColors2, Tangents);
+		}
+	}
 }
