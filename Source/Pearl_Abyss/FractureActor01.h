@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
 #include "KismetProceduralMeshLibrary.h"
+#include "GeomTools.h"
 
 #include "FractureActor01.generated.h"
 
@@ -83,4 +84,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void MakeNewMesh(TArray<FVector> ui, TArray<int> tri, FVector impactPoint);
+
+	UFUNCTION(BlueprintCallable)
+	void FractureSliceMesh(UProceduralMeshComponent* InProcMesh, FVector PlanePosition, FVector PlaneNormal, bool bCreateOtherHalf, UProceduralMeshComponent*& OutOtherHalfProcMesh, EProcMeshSliceCapOption CapOption, UMaterialInterface* CapMaterial);
+
+	UFUNCTION(BlueprintCallable)
+		void ClearStaticMesh();
 };
