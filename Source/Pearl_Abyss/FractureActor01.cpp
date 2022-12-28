@@ -649,3 +649,8 @@ void AFractureActor01::FractureSliceMesh(UProceduralMeshComponent* InProcMesh, F
 	//	}
 	//}
 }
+
+void AFractureActor01::ClearStaticMesh()
+{
+
+}
