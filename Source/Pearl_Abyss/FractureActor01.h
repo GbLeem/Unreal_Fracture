@@ -87,4 +87,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void FractureSliceMesh(UProceduralMeshComponent* InProcMesh, FVector PlanePosition, FVector PlaneNormal, bool bCreateOtherHalf, UProceduralMeshComponent*& OutOtherHalfProcMesh, EProcMeshSliceCapOption CapOption, UMaterialInterface* CapMaterial);
+
+	UFUNCTION(BlueprintCallabel)
+		void MakeNewCollsion();
 };
