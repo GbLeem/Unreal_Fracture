@@ -13,11 +13,10 @@ from gpytoolbox.copyleft import lazy_cage
 #d = "E:/MY_GAME/UNREAL/PearlAbyss_project/Content/MyTask/Fracture-modes/Models/ice/ice.obj"
 
 np.set_printoptions(threshold = sys.maxsize)
-#np.set_printoptions(precision=8)
 
-model = "E:/MY_GAME/UNREAL/Pearl_Git/Content/models/bunny_oded.obj"
+#model = "E:/MY_GAME/UNREAL/Pearl_Git/Content/models/bunny_oded.obj"
+model = "E:/MY_GAME/UNREAL/Pearl_Fracture_Git/Content/models/bunny_oded.obj"
 
-#ue.ProceduralMeshLibrary.get_section_from_static_mesh
 v_fine, f_fine = igl.read_triangle_mesh(model)
 
 v_fine = gpytoolbox.normalize_points(v_fine)
@@ -26,34 +25,20 @@ v, f = lazy_cage(v_fine,f_fine,num_faces=2000)
 tgen = tetgen.TetGen(v,f)
 nodes, elements = tgen.tetrahedralize()
 
-
-# def makearray():
-#     nodeArray = unreal.Array()
-#     nodeArray.append(nodes)
-#     return nodeArray
-
-# print(makearray())
-
 modes = fracture.fracture_modes(nodes,elements) 
-params = fracture.fracture_modes_parameters(num_modes=3,verbose=True,d=3)
+params = fracture.fracture_modes_parameters(num_modes=6,verbose=True,d=3)
 
-contact_point = nodes[1,:]
+#contact_point = nodes[1,:]
+#direction = [1]
+contact_point = [-0.49879505, 0.06937706, 0.15410506]
 direction = np.array([1.0,0.0,0.0])
 
 modes.compute_modes(parameters=params)
 modes.impact_precomputation(v_fine=v_fine,f_fine=f_fine)
 modes.impact_projection(contact_point=contact_point,direction=direction)
-ui, gi = modes.return_ui_gi()
+ui, gi,write_vertices,write_triangles, Vs, Fs = modes.return_ui_gi()
 
 
-def get():
-    return modes
-
-def get_ui():
-    return ui
-
-def get_gi():
-    return gi
 
 def get_str_gi():
     tempStr = ""
@@ -73,16 +58,75 @@ def get_str_ui():
 
     return tempStr
 
+def get_str_write_vertices():
+    tempStr = ""
+    for i in write_vertices:
+        for j in i:
+            tempStr+= f"{j}@"
+        tempStr += "#"
 
-# print(type(ui))
-# sui = np.array2string(ui)
+    return tempStr
 
-# #sgi = gi.tostring()
-# f = open("UIandGI.txt","w")
-# for i in sui:
-#     f.write(i)
+def get_str_write_triangles():
+    tempStr = ""
+    for i in write_triangles:
+        for j in i:
+            tempStr+= f"{j}@"
+        tempStr += "#"
 
-#f.close()
+    return tempStr
+
+def get_str_Vs1():
+    tempStr = ""
+    for i in Vs[0]:
+        for j in i:
+            tempStr+= f"{j}@"
+        tempStr += "#"
+
+    return tempStr
+
+def get_str_Fs1():
+    tempStr = ""
+    for i in Fs[0]:
+        for j in i:
+            tempStr+= f"{j}@"
+        tempStr += "#"
+
+    return tempStr
+
+def get_str_Vs2():
+    tempStr = ""
+    for i in Vs[1]:
+        for j in i:
+            tempStr+= f"{j}@"
+        tempStr += "#"
+
+    return tempStr
+
+def get_str_Fs2():
+    tempStr = ""
+    for i in Fs[1]:
+        for j in i:
+            tempStr+= f"{j}@"
+        tempStr += "#"
+
+    return tempStr
+
+# filename = None
+# igl.write_obj(filename, Vs[1], Fs[1])
+# igl.write_obj(filename, Vs[0], Fs[0])
+
+# vs1 = get_str_Vs1()
+# print(len(vs1))
+# vs2 = get_str_Vs2()
+# print(len(vs2))
+# print("calculate done")
+# fs1 = get_str_Fs1()
+# fs2 = get_str_Fs2()
+# print(fs1)
+# print("\n")
+# print(fs2)
+
 
 
 
