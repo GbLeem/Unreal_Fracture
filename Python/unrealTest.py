@@ -28,9 +28,9 @@ nodes, elements = tgen.tetrahedralize()
 modes = fracture.fracture_modes(nodes,elements) 
 params = fracture.fracture_modes_parameters(num_modes=6,verbose=True,d=3)
 
-#contact_point = nodes[1,:]
 #direction = [1]
-contact_point = [-0.49879505, 0.06937706, 0.15410506]
+#impact = [-0.49879505, 0.06937706, 0.15410506]
+contact_point = nodes[1,:]
 direction = np.array([1.0,0.0,0.0])
 
 modes.compute_modes(parameters=params)
@@ -38,8 +38,11 @@ modes.impact_precomputation(v_fine=v_fine,f_fine=f_fine)
 modes.impact_projection(contact_point=contact_point,direction=direction)
 ui, gi,write_vertices,write_triangles, Vs, Fs = modes.return_ui_gi()
 
-
-
+def make_impact(impact):
+    modes.impact_projection(contact_point = impact, direction=direction)
+    ui, gi,write_vertices,write_triangles, Vs, Fs = modes.return_ui_gi()
+    return Vs, Fs
+    
 def get_str_gi():
     tempStr = ""
     for i in gi:
