@@ -248,6 +248,7 @@ class fracture_modes:
         # There are two ways in which you can provide an impact: with an impact vector or with a contact point and direction.
         if (impact is None):
             # If you gave us a contact point and direction, then
+            print(f"{direction.shape[0]} / {dim}")
             assert(direction.shape[0]==dim)
             # We will build an impact vector that is the size of the input vertices, since that's what we assumed for the least squares precomputation stuff
             if wave:
@@ -377,7 +378,7 @@ class fracture_modes:
     '''
     my method 02: pieces and Vs, Fs
     '''
-    def new_return_ui_gi(self, pieces = True):
+    def new_return_ui_gi(self):
         #assert(self.impact_projected)
         self.fine_vertex_labels_after_impact = self.piece_to_fine_vertices_matrix @ self.piece_labels_after_impact
         Vs = []
@@ -394,14 +395,49 @@ class fracture_modes:
                     vi, ti = igl.remove_unreferenced(self.vertices,self.elements[self.tet_labels_after_impact==i,:])[:2]
                     fi = boundary_faces_fixed(ti)
                 ui, I, J, _ = igl.remove_duplicate_vertices(vi,fi,1e-10)
-                gi = J[fi]          
+                gi = J[fi]   
+                       
                 Vs.append(ui)
                 Fs.append(gi + running_n)
                 running_n = running_n + ui.shape[0]
-        self.mesh_to_write_vertices = np.vstack(Vs)
-        self.mesh_to_write_triangles = np.vstack(Fs)
+                print(running_n)
 
         return self.n_pieces_after_impact, Vs, Fs
+        
+    '''
+    my method 03: only ui,gi return to check how to fracture
+    '''
+    def new_return_ui_gi_v2(self):
+        self.fine_vertex_labels_after_impact = self.piece_to_fine_vertices_matrix @ self.piece_labels_after_impact
+        # Vs = []
+        # Fs = []
+        Ui = []
+        Gi = []
+
+        for i in range(self.n_pieces_after_impact):
+            if (self.fine_vertices is not None):
+                tri_labels = self.fine_vertex_labels_after_impact[self.fine_triangles[:,0]]
+                if np.any(tri_labels==i):
+                    vi, fi = igl.remove_unreferenced(self.fine_vertices,self.fine_triangles[tri_labels==i,:])[:2]
+                else:
+                    continue
+            else:
+                vi, ti = igl.remove_unreferenced(self.vertices,self.elements[self.tet_labels_after_impact==i,:])[:2]
+                fi = boundary_faces_fixed(ti)
+            ui, I, J, _ = igl.remove_duplicate_vertices(vi,fi,1e-10)
+            gi = J[fi]   
+
+            # Vs.append(ui)
+            # Fs.append(gi)
+            # print(Fs[0] == gi)
+            # print(type(gi))
+            Ui.append(ui)
+            Gi.append(gi)
+            break
+        
+        return self.n_pieces_after_impact, Ui, Gi
+
+
 
     def write_segmented_output(self,filename = None,pieces=False):
         # All this routine is doing is write the fractured output, as a triangle mesh with num_broken_pieces connected components, so you can load it into an animation in another software. 
