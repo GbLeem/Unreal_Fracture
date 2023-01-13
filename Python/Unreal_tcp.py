@@ -1,8 +1,6 @@
 import socket
 import Unreal_Fracture as u
 
-bFirstSend = True
-
 # init 
 Fracture_modes = u.Unreal_Fracture()
 
@@ -21,14 +19,10 @@ if __name__ == "__main__":
         # first send
         vertex, face = Fracture_modes.first_send()
         senddata = vertex+"%"+face+"$"
-        
-        #if(bFirstSend):
         client.send(senddata.encode())
-        bFirstSend = False
 
-        # for receive data
+        # receive data (impact point or "ok")
         impact = []
-
         data = client.recv(2048)
         data = data.decode("utf-8")
         print(data)        
@@ -40,15 +34,14 @@ if __name__ == "__main__":
             for t in temp:
                 impact.append(float(t))
 
+            # make new fracture model with new impact point
             Fracture_modes.runtime_impact_projection(impact)
-            # Vs랑 Fs를 넣어서 pieces에 맞게 쪼개서 send 하는 것 구현하기
 
-            # 새로운 VS, FS return 방식
+            # VS, FS return
             strVS = Fracture_modes.get_num_str_vs(Fracture_modes.pieces, Fracture_modes.Vs)
             strFS = Fracture_modes.get_num_str_fs(Fracture_modes.pieces, Fracture_modes.Fs)
             
             # re-send data from python to unreal
-            #senddata = strui + "%" + strgi+ "$" + strui2 + "%" + strgi2
             senddata = str(Fracture_modes.pieces) + "&" +strVS +"$" +strFS
             
             client.send(senddata.encode())

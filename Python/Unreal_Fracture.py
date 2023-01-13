@@ -5,10 +5,14 @@ from context import fracture_utility as fracture
 from context import gpytoolbox
 from gpytoolbox.copyleft import lazy_cage
 
-model = "E:/MY_GAME/UNREAL/Pearl_Fracture_Git/Content/models/bunny_oded.obj"    
+model1 = "E:/MY_GAME/UNREAL/Pearl_Fracture_Git/Content/models/bunny_oded.obj"    
+model2 = "E:/MY_GAME/UNREAL/Pearl_Fracture_Git/Content/models/bottle.obj"
+model3 = "E:/MY_GAME/UNREAL/Pearl_Fracture_Git/Content/models/table.obj"
+model4 = "E:/MY_GAME/UNREAL/Pearl_Fracture_Git/Content/models/rocking_chair.obj"
+
 class Unreal_Fracture:
     def __init__(self):
-        self.v_fine, self.f_fine = igl.read_triangle_mesh(model)
+        self.v_fine, self.f_fine = igl.read_triangle_mesh(model1)
         self.v_fine = gpytoolbox.normalize_points(self.v_fine)
         self.v, self.f = lazy_cage(self.v_fine, self.f_fine, num_faces=2000)
 
@@ -16,7 +20,7 @@ class Unreal_Fracture:
         self.nodes, self.elements = self.tgen.tetrahedralize()
 
         self.modes = fracture.fracture_modes(self.nodes,self.elements) 
-        self.params = fracture.fracture_modes_parameters(num_modes=3,verbose=True,d=1)
+        self.params = fracture.fracture_modes_parameters(num_modes=8,verbose=False,d=1)
 
         self.contact_point = self.nodes[1,:]
         self.direction = np.array([1.0,0.0,0.0])

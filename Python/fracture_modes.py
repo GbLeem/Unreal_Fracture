@@ -400,7 +400,7 @@ class fracture_modes:
                 Vs.append(ui)
                 Fs.append(gi + running_n)
                 running_n = running_n + ui.shape[0]
-                print(running_n)
+                #print(running_n)
 
         return self.n_pieces_after_impact, Vs, Fs
         
@@ -413,6 +413,7 @@ class fracture_modes:
         # Fs = []
         Ui = []
         Gi = []
+        running_n = 0 
 
         for i in range(self.n_pieces_after_impact):
             if (self.fine_vertices is not None):
@@ -424,17 +425,14 @@ class fracture_modes:
             else:
                 vi, ti = igl.remove_unreferenced(self.vertices,self.elements[self.tet_labels_after_impact==i,:])[:2]
                 fi = boundary_faces_fixed(ti)
+
             ui, I, J, _ = igl.remove_duplicate_vertices(vi,fi,1e-10)
             gi = J[fi]   
-
-            # Vs.append(ui)
-            # Fs.append(gi)
-            # print(Fs[0] == gi)
-            # print(type(gi))
+            
             Ui.append(ui)
-            Gi.append(gi)
-            break
-        
+            Gi.append(gi + running_n)
+            running_n = running_n + ui.shape[0]
+            print(f"{running_n}")
         return self.n_pieces_after_impact, Ui, Gi
 
 
