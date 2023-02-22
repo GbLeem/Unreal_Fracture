@@ -6,6 +6,7 @@
 * 경희소융 펄어비스 인재양성 프로젝트 결과물
 * Breaking Good : Fracture Modes for Realtime Destruction 논문을 참고하여 언리얼 엔진에 실시간 충격 기반 파괴 시뮬레이션을 구현
 * 소개 영상 : https://youtu.be/mJ8dB0lkMps
+* 후기 : https://velog.io/@gb_leem/펄어비스-인재양성-프로젝트-후기
 
 ## 프로젝트 설명
 * 개발 툴 및 사용 언어
