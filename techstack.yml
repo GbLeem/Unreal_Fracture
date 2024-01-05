@@ -1,7 +1,8 @@
 repo_name: GbLeem/Unreal_Fracture
 report_id: c61b2ef28b58f1e38b00f9a295f1b82d
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-30T18:51:22+00:00'
+timestamp: '2024-01-05T08:29:36+00:00'
 requested_by: GbLeem
 provider: github
 branch: main
@@ -15,6 +16,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/no-img-open-source.png
+  detection_source_url: https://github.com/GbLeem/Unreal_Fracture
   detection_source: Repo Metadata
 - name: C#
   description: Simple, general-purpose, object-oriented programming language for the
@@ -25,6 +27,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png
+  detection_source_url: https://github.com/GbLeem/Unreal_Fracture
   detection_source: Repo Metadata
 - name: C++
   description: Has imperative, object-oriented and generic programming features, while
@@ -35,6 +38,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1049/cplusplus.png
+  detection_source_url: https://github.com/GbLeem/Unreal_Fracture
   detection_source: Repo Metadata
 - name: Python
   description: A clear and powerful object-oriented programming language, comparable
@@ -45,6 +49,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/993/pUBY5pVj.png
+  detection_source_url: https://github.com/GbLeem/Unreal_Fracture
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -54,4 +59,5 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/GbLeem/Unreal_Fracture
   detection_source: Repo Metadata
